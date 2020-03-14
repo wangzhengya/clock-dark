@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模拟时钟</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <button id="darkmode-button">切换</button>
+    </header>
+    <div class="container">
+      <div class="clock">
+        <div class="hour">
+          <div class="hr" id="hr"></div>
+        </div>
+        <div class="minute">
+          <div class="min" id="min"></div>
+        </div>
+        <div class="second">
+          <div class="sec" id="sec"></div>
+        </div>
+      </div>
+    </div>
+    <script src="darken.umd.js"></script>
+    <script>
+      const darkmode = new darken({
+        variables: {
+          "--container-background": [" #00eeff", "#091921"],
+          "--clock-background": [
+            " #fff url(clock.png)",
+            "#091921 url(clock.png)"
+          ],
+          "--clock-border": [" 20px solid #fff", "20px solid #091921"],
+          "--clock-box-shadow": [
+            " inset 0 0 30px rgba(0, 0, 0, 0.1),0 20px 20px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 255, 255, 1)",
+            "inset 0 0 30px rgba(255, 255, 255, 0.1),0 20px 20px rgba(255, 255, 255, 0.2), 0 0 0 4px rgba(0, 0, 0, 1)"
+          ],
+          "--clock-before-background": [" #848484", "#848484"],
+          "--clock-before-border": [" 2px solid #fff", "2px solid #fff"],
+          "--hr-background": [" #848484", "#d6d6d6"],
+          "--min-background": [" #d6d6d6", "#848484"],
+          "--sec-background": [" #ff6767", "#ff105e"]
+        },
+        toggle: "#darkmode-button"
+      });
+      const mode = getComputedStyle(document.documentElement).getPropertyValue(
+        "content"
+      );
+      if (mode == '"dark"') {
+        darkmode.on();
+      } else darkmode.off();
+    </script>
+    <script>
+      setInterval(() => {
+        const hr = document.querySelector("#hr");
+        const min = document.querySelector("#min");
+        const sec = document.querySelector("#sec");
+        let day = new Date();
+        let hh = day.getHours() * 30;
+        let mm = day.getMinutes() * 6;
+        let ss = day.getSeconds() * 6;
+        hr.style.transform = `rotateZ(${hh + mm / 12}deg)`;
+        min.style.transform = `rotateZ(${mm}deg)`;
+        sec.style.transform = `rotateZ(${ss}deg)`;
+      });
+    </script>
+  </body>
+</html>
